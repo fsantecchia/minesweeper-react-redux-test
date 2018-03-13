@@ -7,8 +7,8 @@ require('./Minesweeper.scss');
 const Minesweeper = (props) => {
     return (
         <div className="minesweeper">
-            <MinesweeperHeader remainingFlags={5}/>
-            <MinesweeperBoard />
+            <MinesweeperHeader remainingFlags={props.game.remainingFlags}/>
+            <MinesweeperBoard settings={props.settings} game={props.game}/>
         </div>
     );
 
@@ -16,6 +16,7 @@ const Minesweeper = (props) => {
 
 function mapStateToProps(state) {
     return {
+        game: state.gameReducer,
         settings: state.settingsReducer.settings
     };
 }

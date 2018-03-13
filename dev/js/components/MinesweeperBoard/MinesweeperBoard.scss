@@ -1,3 +1,12 @@
 .minesweeper-board {
+    align-items: center;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    padding: 25px;
 
+    &--row {
+        display: flex;
+        flex-wrap: nowrap;
+    }
 }

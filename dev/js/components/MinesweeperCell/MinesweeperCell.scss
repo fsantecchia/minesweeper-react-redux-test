@@ -1,0 +1,22 @@
+.minesweeper-cell {
+    background-color: #CCC;
+    border: 1px solid #BBB;
+    cursor: pointer;
+    font-size: 20px;
+    height: 30px;
+    text-align: center;
+    width: 30px;
+
+    &:hover {
+        border: 2px solid red;
+    }
+
+    &__clicked {
+        background-color: #F3F3F3;
+        cursor: auto;
+
+        &:hover {
+            border: 1px solid #BBB;
+        }
+    }
+}

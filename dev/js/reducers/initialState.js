@@ -6,6 +6,12 @@ const initialState = {
             mines: 5,
             totalFlags: 5
         }
+    },
+    gameReducer: {
+        clickedCells: [],
+        flaggedCells: [],
+        mines: [],
+        remainingFlags: 5
     }
 };
 

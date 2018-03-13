@@ -4,3 +4,10 @@ export const RESTART_GAME = (settings) => {
         payload: settings
     }
 };
+
+export const CELL_CLICKED = (cells) => {
+    return {
+        type: 'CELL_CLICKED',
+        payload: cells
+    }
+};

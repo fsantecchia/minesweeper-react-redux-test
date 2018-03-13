@@ -1,11 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import MinesweeperHeader from '../../components/MinesweeperHeader/MinesweeperHeader';
+import MinesweeperBoard from '../../components/MinesweeperBoard/MinesweeperBoard';
 require('./Minesweeper.scss');
 
 const Minesweeper = (props) => {
     return (
         <div className="minesweeper">
-          MINESWEEPER COMPONENT
+            <MinesweeperHeader remainingFlags={5}/>
+            <MinesweeperBoard />
         </div>
     );
 

@@ -8,19 +8,22 @@ require('./MinesweeperCell.scss');
 
 class MinesweeperCell extends React.Component {
     static propTypes = {
+        hasFlag: PropTypes.bool.isRequired,
         isClicked: PropTypes.bool.isRequired,
         numberOfAdjacentMines: PropTypes.number.isRequired,
-        onClickHandler: PropTypes.func.isRequired
+        onClickHandler: PropTypes.func.isRequired,
+        onRightClickHandler: PropTypes.func.isRequired
     }
 
     render() {
         let className = classNames({
           'minesweeper-cell': true,
-          'minesweeper-cell__clicked': this.props.isClicked
+          'minesweeper-cell__clicked': this.props.isClicked,
+          'minesweeper-cell__flagged': this.props.hasFlag
         });
 
         return (
-            <div className={className} onClick={this.handleClick.bind(this)}>
+            <div className={className} onClick={this.handleClick.bind(this)} onContextMenu={this.handleRightClick.bind(this)}>
                 {this.renderContent()}
             </div>
         );
@@ -41,6 +44,14 @@ class MinesweeperCell extends React.Component {
             } else if (!this.props.isClicked) {
                 this.props.onClickHandler(this.props.position)
             }
+        }
+    }
+
+    handleRightClick(event) {
+        event.preventDefault();
+
+        if (!this.props.isClicked) {
+            this.props.onRightClickHandler(this.props.position);
         }
     }
 }

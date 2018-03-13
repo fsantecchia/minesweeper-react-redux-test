@@ -5,7 +5,7 @@ import _ from 'lodash';
 import MinesweeperCell from '../MinesweeperCell/MinesweeperCell';
 
 import store from '../../store/store';
-import {CELL_CLICKED} from '../../actions/actions';
+import {CELL_CLICKED, CELL_FLAGGED, CELL_UNFLAGGED} from '../../actions/actions';
 
 require('./MinesweeperBoard.scss');
 
@@ -39,6 +39,7 @@ class MinesweeperBoard extends React.Component {
     }
 
     renderCells(rowNumber) {
+
         let index;
         let cells = [];
 
@@ -49,11 +50,13 @@ class MinesweeperBoard extends React.Component {
             };
             let hasMine = _.some(this.props.game.mines, position);
             let props = {
+                hasFlag: _.some(this.props.game.flaggedCells, position),
                 hasMine: hasMine,
                 isClicked: _.some(this.props.game.clickedCells, position),
                 key: index,
                 numberOfAdjacentMines: hasMine ? 99 : this.getNumberOfAdjacentMines(position),
                 onClickHandler: this.onClickCell.bind(this),
+                onRightClickHandler: this.onRightClickCellHandler.bind(this),
                 position: position
             };
 
@@ -130,8 +133,40 @@ class MinesweeperBoard extends React.Component {
     onClickCell(cell) {
         let newClickedCells = _.clone(this.props.game.clickedCells);
         newClickedCells.push(cell);
+        this.clickAdjacentCells(cell, newClickedCells);
 
         store.dispatch(CELL_CLICKED(newClickedCells));
+    }
+
+    clickAdjacentCells(cell, newClickedCells) {
+        let numberOfAdjacentMines = this.getNumberOfAdjacentMines(cell)
+
+        //if numberOfAdjacentMines === 0 && the cell position exists in the current game then open adjacentCells
+        if (numberOfAdjacentMines === 0 && cell.row >= 1 && cell.column >= 1 && cell.row <= this.props.settings.rows && cell.column <= this.props.settings.columns) {
+            this.getAdjacentCells(cell).forEach(adjacentCell => {
+                if (!_.some(newClickedCells, adjacentCell)) {
+                    //If it's not clicked then mark as clicked and delete the flag if exists
+                    newClickedCells.push(adjacentCell);
+                    this.unflagCell(adjacentCell);
+
+                    this.clickAdjacentCells(adjacentCell, newClickedCells);
+                }
+            });
+        }
+    }
+
+    onRightClickCellHandler(cell) {
+        if (_.some(this.props.game.flaggedCells, cell)) {
+            store.dispatch(CELL_UNFLAGGED(cell));
+        } else if (this.props.game.remainingFlags > 0) {
+            store.dispatch(CELL_FLAGGED(cell));
+        }
+    }
+
+    unflagCell(cell) {
+        if (_.some(this.props.game.flaggedCells, cell)) {
+            store.dispatch(CELL_UNFLAGGED(cell));
+        }
     }
 }
 

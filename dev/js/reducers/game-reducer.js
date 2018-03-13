@@ -13,6 +13,14 @@ export default function (state = initialState.gameReducer, action) {
         case 'CELL_CLICKED':
             newState.clickedCells = action.payload;
             break;
+        case 'CELL_FLAGGED':
+            newState.remainingFlags = newState.remainingFlags - 1;
+            newState.flaggedCells.push(action.payload);
+            break;
+        case 'CELL_UNFLAGGED':
+            newState.remainingFlags = newState.remainingFlags + 1;
+            _.remove(newState.flaggedCells, action.payload);
+            break;
     }
 
     return newState;

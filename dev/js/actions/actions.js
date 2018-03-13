@@ -11,3 +11,17 @@ export const CELL_CLICKED = (cells) => {
         payload: cells
     }
 };
+
+export const CELL_FLAGGED = (cell) => {
+    return {
+        type: 'CELL_FLAGGED',
+        payload: cell
+    }
+};
+
+export const CELL_UNFLAGGED = (cell) => {
+    return {
+        type: 'CELL_UNFLAGGED',
+        payload: cell
+    }
+};
